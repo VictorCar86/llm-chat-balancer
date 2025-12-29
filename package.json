@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "start": "bun index.ts",
+    "dev": "bun index.ts --watch"
+  },
+  "dependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "cors": "^2.8.5",
+    "express": "^5.2.1",
+    "groq-sdk": "^0.37.0",
+    "zod": "^4.2.1"
+  }
+}
