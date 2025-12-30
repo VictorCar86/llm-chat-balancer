@@ -12,12 +12,18 @@ app.post("/chat", async (req, res) => {
         const { messages } = req.body;
         const service = new Handler().getService();
         const response = await service.chat(messages);
-        return res
-            .status(200)
+
+        res.status(200)
             .set("Content-Type", "text/event-stream")
             .set("Cache-Control", "no-cache")
-            .set("Connection", "keep-alive")
-            .send(response);
+            .set("Connection", "keep-alive");
+
+        for await (const chunk of response) {
+            res.write(chunk);
+        }
+
+        res.end();
+        return;
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: "Internal Server Error" });
