@@ -1,12 +1,13 @@
 import { groqService } from "./services/groq";
+import { cerebrasService } from "./services/cerebras";
 import { AIService } from "./types";
 
-export class Handler {
+class Handler {
     private services: AIService[];
     private serviceIndex: number;
 
     constructor() {
-        this.services = [groqService];
+        this.services = [groqService, cerebrasService];
         this.serviceIndex = 0;
     }
 
@@ -16,3 +17,5 @@ export class Handler {
         return service;
     }
 }
+
+export default new Handler();

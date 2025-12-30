@@ -20,7 +20,7 @@ export async function getGroqChatCompletion(messages: Message[]) {
     });
     return (async function* () {
         for await (const chunk of response) {
-            yield chunk.choices[0].delta.content || "";
+            yield chunk.choices[0]?.delta?.content || "";
         }
     })()
 }

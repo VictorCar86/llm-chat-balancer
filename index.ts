@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { Handler } from "./src/handler";
+import Handler from "./src/handler";
 
 const app = express();
 
@@ -10,7 +10,7 @@ app.use(express.json());
 app.post("/chat", async (req, res) => {
     try {
         const { messages } = req.body;
-        const service = new Handler().getService();
+        const service = Handler.getService();
         const response = await service.chat(messages);
 
         res.status(200)
