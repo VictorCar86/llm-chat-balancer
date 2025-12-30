@@ -1,5 +1,6 @@
 import { groqService } from "./services/groq";
 import { cerebrasService } from "./services/cerebras";
+import { geminiService } from "./services/gemini";
 import { AIService } from "./types";
 
 class Handler {
@@ -7,12 +8,12 @@ class Handler {
     private serviceIndex: number;
 
     constructor() {
-        this.services = [groqService, cerebrasService];
+        this.services = [groqService, cerebrasService, geminiService];
         this.serviceIndex = 0;
     }
 
-    getService() {
-        const service = this.services[this.serviceIndex];
+    getService(): AIService {
+        const service: AIService = this.services[this.serviceIndex];
         this.serviceIndex = (this.serviceIndex + 1) % this.services.length;
         return service;
     }
