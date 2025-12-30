@@ -1,13 +1,14 @@
 import express from "express";
 import cors from "cors";
 import Handler from "./src/handler";
+import { validateChatSchema } from "./src/middlewares";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-app.post("/chat", async (req, res) => {
+app.post("/chat", validateChatSchema, async (req, res) => {
     try {
         const { messages } = req.body;
         const service = Handler.getService();

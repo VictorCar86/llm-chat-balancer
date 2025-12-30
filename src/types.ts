@@ -1,7 +1,6 @@
-export type GeneralMessage = {
-    role: "user" | "assistant" | "system";
-    content: string;
-};
+import { MessageSchema } from "./schemas";
+
+export type GeneralMessage = MessageSchema;
 
 export type AIService = {
     name: string;
