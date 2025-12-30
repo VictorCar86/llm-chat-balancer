@@ -8,13 +8,18 @@ class Handler {
     private serviceIndex: number;
 
     constructor() {
-        this.services = [groqService, cerebrasService, geminiService];
+        this.services = [
+            groqService,
+            cerebrasService,
+            geminiService,
+        ];
         this.serviceIndex = 0;
     }
 
     getService(): AIService {
         const service: AIService = this.services[this.serviceIndex];
         this.serviceIndex = (this.serviceIndex + 1) % this.services.length;
+        // console.log(`Using service: ${service.name}`);
         return service;
     }
 }

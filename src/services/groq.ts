@@ -1,14 +1,11 @@
 import Groq from "groq-sdk";
-import { AIService } from "../types";
+import { AIService, GeneralMessage } from "../types";
 
-export type Message = {
-    role: "user" | "assistant" | "system";
-    content: string;
-}
+export type GroqMessage = GeneralMessage;
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-export async function getGroqChatCompletion(messages: Message[]) {
+export async function getGroqChatCompletion(messages: GroqMessage[]) {
     const response = await groq.chat.completions.create({
         messages: messages,
         model: "openai/gpt-oss-120b",
@@ -22,10 +19,10 @@ export async function getGroqChatCompletion(messages: Message[]) {
         for await (const chunk of response) {
             yield chunk.choices[0]?.delta?.content || "";
         }
-    })()
+    })();
 }
 
 export const groqService: AIService = {
     name: "groq",
-    chat: getGroqChatCompletion
-}
+    chat: getGroqChatCompletion,
+};

@@ -1,8 +1,9 @@
-import { Message } from "./services/groq";
-
-export type GeneralMessage = Message;
+export type GeneralMessage = {
+    role: "user" | "assistant" | "system";
+    content: string;
+};
 
 export type AIService = {
-  name: string;
-  chat: (messages: GeneralMessage[]) => Promise<AsyncIterable<string>>;
-}
+    name: string;
+    chat: (messages: GeneralMessage[]) => Promise<AsyncIterable<string>>;
+};
