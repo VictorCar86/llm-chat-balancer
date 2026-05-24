@@ -1,10 +1,10 @@
 import { Router } from "express";
 import Handler from "../handler";
-import { validateChatSchema } from "../middlewares";
+import { validateChatSchema, authenticateToken } from "../middlewares";
 
 const router = Router();
 
-router.post("/chat", validateChatSchema, async (req, res) => {
+router.post("/chat", authenticateToken, validateChatSchema, async (req, res) => {
     try {
         const { messages } = req.body;
         const service = Handler.getService();

@@ -1,11 +1,14 @@
 import { Router } from "express";
 import { openApiSpec } from "../openapi";
+import { docsAuthGuard, docsLoginHandler } from "../middlewares";
 
 const router = Router();
 
-router.get("/openapi.json", (req, res) => res.json(openApiSpec));
+router.post("/docs/login", docsLoginHandler);
 
-router.get("/docs", (req, res) => {
+router.get("/openapi.json", docsAuthGuard, (req, res) => res.json(openApiSpec));
+
+router.get("/docs", docsAuthGuard, (req, res) => {
     res.setHeader("Content-Type", "text/html");
     res.send(`<!DOCTYPE html>
 <html>
@@ -16,16 +19,19 @@ router.get("/docs", (req, res) => {
 <body>
     <div id="swagger-ui"></div>
     <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
-    <script>
+<script>
         window.onload = () => {
-            SwaggerUIBundle({ url: "/openapi.json", dom_id: "#swagger-ui" });
+            SwaggerUIBundle({
+                url: "/openapi.json",
+                dom_id: "#swagger-ui",
+            });
         };
     </script>
 </body>
 </html>`);
 });
 
-router.get("/redoc", (req, res) => {
+router.get("/redoc", docsAuthGuard, (req, res) => {
     res.setHeader("Content-Type", "text/html");
     res.send(`<!DOCTYPE html>
 <html>
