@@ -1,15 +1,16 @@
 // src/services/gemini.ts
 import { GoogleGenAI, Content } from "@google/genai";
-import { GeneralMessage, AIService } from "../types";
+import { GeneralMessage, AIService, ChatOptions } from "../types";
 
 export type GeminiMessage = Content;
+
+const GEMINI_MODEL = "gemini-3-flash-preview";
 
 const ai = new GoogleGenAI({ apiKey: process.env["GEMINI_API_KEY"] });
 
 export function formatGeminiMessage(message: GeneralMessage, cleanRole = true) {
     let role: GeminiMessage["role"] = message.role;
 
-    // Gemini requires 'user' or 'model' roles
     if (cleanRole && ["assistant", "system", "model"].includes(role)) {
         role = "model";
     } else {
@@ -22,7 +23,7 @@ export function formatGeminiMessage(message: GeneralMessage, cleanRole = true) {
     };
 }
 
-export async function getGeminiChatCompletion(messages: GeneralMessage[]) {
+export async function getGeminiChatCompletion(messages: GeneralMessage[], _options?: ChatOptions) {
     let formattedContents: GeminiMessage[] = [];
 
     if (messages.length === 1) {
@@ -32,7 +33,7 @@ export async function getGeminiChatCompletion(messages: GeneralMessage[]) {
     }
 
     const response = await ai.models.generateContentStream({
-        model: "gemini-3-flash-preview",
+        model: GEMINI_MODEL,
         contents: formattedContents,
     });
 
@@ -45,5 +46,8 @@ export async function getGeminiChatCompletion(messages: GeneralMessage[]) {
 
 export const geminiService: AIService = {
     name: "gemini",
+    model: GEMINI_MODEL,
+    owned_by: "google",
+    created: 1735689600,
     chat: getGeminiChatCompletion,
 };
